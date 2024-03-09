@@ -2,11 +2,13 @@
 """
 printing pascal triangle
 """
+
+
 def pascal_triangle(n):
     """
     returns tringle of size n
     """
-    if  n <= 0:
+    if in <= 0:
         return []
 
     triangle = []
@@ -16,7 +18,7 @@ def pascal_triangle(n):
 
         if i >= 2:
             for j in range(1, i):
-                row[j] = triangle[i- 1][j - 1] + triangle[i - 1][j]
+                row[j] = triangle[i - 1][j - 1] + triangle[i - 1][j]
 
         triangle.append(row)
 
