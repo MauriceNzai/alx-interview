@@ -1,14 +1,21 @@
 #!/usr/bin/python3
 """
 printing pascal triangle
+
+In this triangle, each number is equal to sum of two number directly above it.
 """
 
 
 def pascal_triangle(n):
     """
     returns tringle of size n
+
+    args:
+        n: the number of rows to print
     """
-    if in <= 0:
+
+    # base case: return empty list if n <= 0
+    if n <= 0:
         return []
 
     triangle = []
