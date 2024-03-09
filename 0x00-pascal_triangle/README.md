@@ -1,5 +1,8 @@
 0x00. Pascal's Triangle
 
+https://upload.wikimedia.org/wikipedia/commons/0/0d/PascalTriangleAnimated2.gif
+
+
 Must Know
 To successfully complete this project, you should revise the following Python concepts:
 
