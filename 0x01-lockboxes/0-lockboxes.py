@@ -1,6 +1,13 @@
 #!/usr/bin/python3
-
+"""
+Module holds a function to determine the lockboxes problem
+"""
 def canUnlockAll(boxes):
+    """
+    determines if all the boxes can be opened
+    Attributes:
+        boxes: list of lists
+    """
     flag = False
 
     unlocked = [0]
