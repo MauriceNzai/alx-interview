@@ -15,25 +15,24 @@ def factors(num):
     """
     Gets the factors of number
     """
-    
     mylist = []
-    while n % 2 == 0:
+    while num % 2 == 0:
         mylist.append(2)
-        n = n / 2
-    for i in range(3, int(math.sqrt(n)) + 1, 2):
-        while n % i == 0:
+        num = num / 2
+    for i in range(3, int(math.sqrt(num)) + 1, 2):
+        while num % i == 0:
             mylist.append(i)
-            n = n / i
-    if n > 2:
-        mylist.append(n)
+            num = num / i
+    if num > 2:
+        mylist.append(num)
     return mylist
+
 
 def minOperations(n):
     """
     determines minimum number of operations to result exactly n H characters
     """
-    
-    if type(n) != int or n < 2:
+    if not isinstance(n, int) or n < 2:
         return 0
     else:
         numOperations = sum(factors(n))
