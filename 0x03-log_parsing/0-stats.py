@@ -9,14 +9,8 @@ import sys
 
 i = 0
 sum_file_size = 0
-status_codes = {'200': 0,
-               '301': 0,
-               '400': 0,
-               '401': 0,
-               '403': 0,
-               '404': 0,
-               '405': 0,
-               '500': 0}
+status_codes = {'200': 0, '301': 0, '400': 0, '401': 0, '403': 0, '404': 0,
+                '405': 0, '500': 0}
 
 try:
     for line in sys.stdin:
@@ -31,7 +25,7 @@ try:
             if i == 10:
                 print("File size: {:d}".format(total_file_size))
                 sorted_keys = sorted(status_codes.keys())
-                for  key in sorted_keys:
+                for key in sorted_keys:
                     val = status_codes[key]
                     if val != 0:
                         print("{}: {}".format(key, val))
