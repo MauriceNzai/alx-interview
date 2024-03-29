@@ -42,8 +42,7 @@ def signal_handler(signal, frame):
     """
     handles signals
     """
-    print("\nKeyboard Interruption (CTRL C) detected. Printing statistics.")
-    print_statistics(total_file_size, status_code_count)
+    print_stats(total_file_size, status_code_count)
     sys.exit(0)
 
 
@@ -60,9 +59,7 @@ def main():
     signal.signal(signal.SIGINT, signal_handler)
 
     try:
-        line_count = 0
-        for line in sys.stdin:
-            line_count += 1
+        for line_count, line in enumerate(sys.stdin, 1):
             line = line.strip()
             parsed_data = parse_line(line)
 
@@ -72,17 +69,21 @@ def main():
                 status_code_count[status_code] = status_code_count.get(
                         status_code, 0) + 1
 
-            # print statistics after every 10 lines
             if line_count % 10 == 0:
                 print_stats(total_file_size, status_code_count)
 
     except KeyboardInterrupt:
-        # trigger signal handler for CTRL C
-        signal_handler(signal.SIGINT, None)
+        # handle keyboard interruption within the block
+        print_stats(total_file_size, status_code_count)
+        sys.exit(0)
 
     except BrokenPipeError:
         # ignore broken pipe error
         pass
+
+    # Print statistics at the end of input
+    print("\nEnd of input. Printing final statistics:")
+    print_stats(total_file_size, status_code_count)
 
 
 if __name__ == "__main__":
