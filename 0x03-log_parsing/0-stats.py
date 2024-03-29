@@ -1,90 +1,40 @@
 #!/usr/bin/python3
-
 """
-reads stdin line by line and computes metrics:
+Log parsing: reads stdin line by line and computes metrics:
 """
 
-import re
-import signal
 import sys
 
 
-def parse_line(line):
-    """
-    parses a line of user input
-    """
-    # input format to match below regular expresssion
-    pattern = r'^(\d+\.\d+\.\d+\.\d+) - \[(.*?)\] "GET /projects/260 HTTP/1\.1" (\d+) (\d+)$'
+if __name__ == '__main__':
 
-    # match the pattern
-    match = re.match(pattern, line)
-    if match:
-        ip_address = match.group(1)
-        date = match.group(2)
-        status_code = int(match.group(3))
-        file_size = int(match.group(4))
+    filesize, count = 0, 0
+    codes = ["200", "301", "400", "401", "403", "404", "405", "500"]
+    stats = {k: 0 for k in codes}
 
-        return ip_address, date, status_code, file_size
-    else:
-        return None
-
-
-def print_stats(total_file_size, status_code_count):
-    """
-    prints the statistics in a given format
-    """
-    print("File size:", total_file_size)
-    for status_code in sorted(status_code_count.keys()):
-        print("{}: {}".format(status_code, status_code_count[status_code]))
-
-
-def signal_handler(signal, frame):
-    """
-    handles signals
-    """
-    print_stats(total_file_size, status_code_count)
-    sys.exit(0)
-
-
-def main():
-    """
-    the entry point and main function
-    """
-    global total_file_size, status_code_count
-
-    total_file_size = 0
-    status_code_count = {}
-
-    # Register signal handler for SIGINT (CTRL C)
-    signal.signal(signal.SIGINT, signal_handler)
+    def print_stats(stats: dict, file_size: int) -> None:
+        print("File size: {:d}".format(filesize))
+        for key, val in sorted(stats.items()):
+            if val:
+                print("{}: {}".format(key, val))
 
     try:
-        for line_count, line in enumerate(sys.stdin, 1):
-            line = line.strip()
-            parsed_data = parse_line(line)
-
-            if parsed_data:
-                ip_address, date, status_code, file_size = parsed_data
-                total_file_size += file_size
-                status_code_count[status_code] = status_code_count.get(
-                        status_code, 0) + 1
-
-            if line_count % 10 == 0:
-                print_stats(total_file_size, status_code_count)
-
+        for line in sys.stdin:
+            count += 1
+            data = line.split()
+            try:
+                status_code = data[-2]
+                if status_code in stats:
+                    stats[status_code] += 1
+            except BaseException:
+                pass
+            try:
+                filesize += int(data[-1])
+            except BaseException:
+                pass
+            if count % 10 == 0:
+                print_stats(stats, filesize)
+        print_stats(stats, filesize)
     except KeyboardInterrupt:
-        # handle keyboard interruption within the block
-        print_stats(total_file_size, status_code_count)
-        sys.exit(0)
-
-    except BrokenPipeError:
-        # ignore broken pipe error
-        pass
-
-    # Print statistics at the end of input
-    print("\nEnd of input. Printing final statistics:")
-    print_stats(total_file_size, status_code_count)
-
-
-if __name__ == "__main__":
-    main()
+        print_stats(stats, filesize)
+        raise
