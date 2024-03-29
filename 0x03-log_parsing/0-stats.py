@@ -33,7 +33,7 @@ def print_stats(total_file_size, status_code_count):
     """
     prints the statistics in a given format
     """
-    print("File size:", totsl_file_size)
+    print("File size:", total_file_size)
     for status_code in sorted(status_code_count.keys()):
         print("{}: {}".format(status_code, status_code_count[status_code]))
 
