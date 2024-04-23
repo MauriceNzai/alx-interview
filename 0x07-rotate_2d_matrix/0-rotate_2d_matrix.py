@@ -2,6 +2,8 @@
 """
 rotating 2D matrix
 """
+
+
 def transpose(matrix):
     """
     trnsposes the matrix
@@ -13,16 +15,18 @@ def transpose(matrix):
             matrix[j][i] = temp
     return matrix
 
+
 def reverse_rows(row, start, end):
     """
     reverse each row of the transposed matrix
     """
     while start < end:
-        temp=row[start]
-        row[start]=row[end]
-        row[end]=temp
-        start=start+1
-        end=end-1
+        temp = row[start]
+        row[start] = row[end]
+        row[end] = temp
+        start = start + 1
+        end = end - 1
+
 
 def rotate_2d_matrix(matrix):
     """
