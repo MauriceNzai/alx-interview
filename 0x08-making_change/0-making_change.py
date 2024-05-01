@@ -31,6 +31,6 @@ def makeChange(coins, total):
     """
     returns the least change
     """
-    if total < 1:
+    if total <= 0:
         return 0
     return change_sub(coins, total, [0] * total)
