@@ -8,58 +8,29 @@ def isWinner(x, nums):
     """
     Function to determine who won the game
     """
-    mariaWinsCount = 0
-    benWinsCount = 0
+    if x < 1 or not nums:
+        return None
 
-    for num in nums:
-        roundsSet = list(range(1, num + 1))
-        primesSet = primes_in_range(1, num)
+    m_wins = 0
+    b_wins = 0
 
-        if not primesSet:
-            benWinsCount += 1
-            continue
+    # generate a list of prime number based on the max numbers in num
+    n = max(nums)
+    primes = [True] * (n + 1)
+    primes[0] = primes[1] = False
 
-        isMariaTurns = True
+    for x in range(2, int(n**0.5) + 1):
+        if primes[x]:
+            for y in range(x**2, n + 1, x):
+                primes[y] = False
 
-        while(True):
-            if not primesSet:
-                if isMariaTurns:
-                    benWinsCount += 1
-                else:
-                    mariaWinsCount += 1
-                break
+    # count the no of pm less than n i nums
+    for n in nums:
+        count = sum(primes[2:n+1])
+        b_wins += count % 2 == 0
+        m_wins += count % 2 == 1
 
-            smallestPrime = primesSet.pop(0)
-            roundsSet.remove(smallestPrime)
+    if m_wins == b_wins:
+        return None
 
-            roundsSet = [x for x in roundsSet if x % smallestPrime != 0]
-
-            isMariaTurns = not isMariaTurns
-
-    if mariaWinsCount > benWinsCount:
-        return "Winner: Maria"
-
-    if mariaWinsCount < benWinsCount:
-        return "Winner: Ben"
-
-    return None
-
-
-def is_prime(n):
-    """
-    Returns True if n is prime, else False.
-    """
-    if n < 2:
-        return False
-    for i in range(2, int(n ** 0.5) + 1):
-        if n % i == 0:
-            return False
-    return True
-
-
-def primes_in_range(start, end):
-    """
-    Returns a list of prime numbers between start and end (inclusive).
-    """
-    primes = [n for n in range(start, end+1) if is_prime(n)]
-    return primes
+    return 'Maria' if m_wins > b_wins else 'Ben'
